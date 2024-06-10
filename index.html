@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset = 'utf-8'>
+        <meta name = 'viewport' content = 'width = device-width, initial-scale = 1'>
+        <title> Assignment 2</title>
+        
+        <!--for mapbox-->
+        <script src='https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css' rel='stylesheet' />
+        
+        <!--for sheetrock-->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sheetrock/1.1.4/dist/sheetrock.min.js"></script> 
+        
+
+    </head>
+    <body style = 'background-color: #efeeec;'>
+        <!--Intro-->
+        <div style = "color: #f6f6f6; background-color: #5c543c" class = 'div1'>
+        <h1 style = 'text-align: center;' id = 'header'><u>Fitzroy Provincial Park's Maintenance Issue Reporting System</u></h1>
+        <p>Welcome to the Fitzroy P.P. Maintenance Issue Reporting System! 
+             <br> Here, you can report issues like litter on trails, overflowing garbage bins, issues with comfort stations, etc. This project is intended to give visitors a chance to assist staff with keeping Fitzroy clean and beautiful. It helps staff keep track of any minor issues as in the busy season it can be difficult to keep up. As well, it aims to explore the benefits of community based mapping and citizen science to park operations.
+             <br>
+             <br>Fill out the form below to report any minor maintenance issue you encounter in the park and then take a look at the map underneath to see your reported issues along with any others.
+             <br> 
+             <br>
+             <b>Please Note:</b> This system is not intended for urgent maintenance issues, complaints or emergencies. In these situations, please call the Gate, Duty Officer or in emergencies, 9-1-1. 
+        </p>
+        </div>
+
+        <!--add form-->
+        <div class = 'div2'>
+            <p>1. Fill out the form and click submit.</p>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdaCkbYtSHY0rEUc4Ph1EoxbMUcRD1FXR7Ol6W1Jt9zrT7Q1Q/viewform?embedded=true" width="100%" height="1272" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            <p>2. Once submitted, click the button below to reload the page.</p>
+            <button onClick="window.location.reload();">Refresh Page</button>
+        </div>
+        <!--Add image-->
+        <img src = '/Users/annamagistrale/Desktop/GEOM 4005/Course Material/3/A2Files/Images/IMG_8400 2.jpg' alt = "A snapping turtle with moss on it's back." width = "100% height = 50px">
+        
+        <!--Add basemap-->
+        <div style = "color: #f6f6f6; background-color: #5c543c; text-align: center;" class = 'div3'>
+            <h2>
+            Take a look at your issue on the map!
+            </h2>
+        </div>
+        <div><button class = 'get-location' onclick = 'geolocation()'>Location</button></div>
+        <div id = 'map', style = 'width:100%; min-height:500px'></div>
+            <script>
+                mapboxgl.accessToken = 'pk.eyJ1IjoiYW1hZ2lzdHJhbGUiLCJhIjoiY2xyanM3bTQ5MDFqMjJqcHdtem1uZmk3aiJ9.OLS4djSvledebuYH2fLFSg';
+                const map = new mapboxgl.Map({
+                    container: 'map', // container ID
+                    style: 'mapbox://styles/amagistrale/cltgq0i0f007301qo6xuz0yfa', // style URL
+                    center: [-76.221, 45.482], // starting position [lng, lat]
+                    zoom: 13.5, // starting zoom
+                });
+            </script>
+
+        <!--Sheetrock method to log data to console-->
+        <div id = 'display'></div>
+        <script>
+            sheetrock({
+                url: 'https://docs.google.com/spreadsheets/d/1aFz9qVJJ23KJS1JlYZoATfSW7bRJpqo2-atx4V0gQPY/edit#gid=738138677',
+                callback: draw   });
+            
+            const geolocation = () => {
+                if('geolocation' in navigator){
+                    navigator.geolocation.getCurrentPosition(success, error);
+                    
+                }
+            } 
+            var marker = new mapboxgl.Marker();
+            function success(position){
+                console.log(position);
+                var lati = position.coords.latitude
+                var longi = position.coords.longitude
+                marker.setLngLat([longi, lati]).addTo(map)
+            }
+
+            var TR = L.polygon([
+                [ -76.223008784841142, 45.482173665733335 ], [ -76.222966991822091, 45.482172837982283 ], [ -76.222966991822091, 45.482172837982283 ], [ -76.222966991822091, 45.482172837982283 ], [ -76.222966991822091, 45.482172837982283 ], [ -76.222981158947192, 45.482172837982283 ], [ -76.222981158947192, 45.482172837982283 ], [ -76.222839487696206, 45.482103306850085 ], [ -76.222825320571104, 45.481864913745362 ], [ -76.222825320571104, 45.481666252054232 ], [ -76.222782819195771, 45.481626519631924 ], [ -76.222556145194204, 45.481477522798784 ], [ -76.222371972567913, 45.481328525571612 ], [ -76.22225863556713, 45.481119928791593 ], [ -76.222060295815723, 45.480742465988399 ], [ -76.221876123189418, 45.480374933987015 ], [ -76.221691950563127, 45.480076933306947 ], [ -76.221606947812532, 45.479888198727707 ], [ -76.221621114937633, 45.479590195473293 ], [ -76.221791120438809, 45.479451126748508 ], [ -76.221946958814925, 45.479302124162501 ], [ -76.222102797191013, 45.47921272242175 ], [ -76.222272802692231, 45.47917298826922 ], [ -76.222626980819697, 45.479163054726719 ], [ -76.222924490446786, 45.479182921809986 ], [ -76.22313699732328, 45.47922265595551 ], [ -76.223392005575079, 45.479302124162501 ], [ -76.223547843951167, 45.479302124162501 ], [ -76.223774517952762, 45.47924252301776 ], [ -76.22410036183004, 45.47925245654627 ], [ -76.224553709833216, 45.47925245654627 ], [ -76.224837052335218, 45.479451126748508 ], [ -76.225120394837191, 45.479629929331622 ], [ -76.225361235963888, 45.479858398473198 ], [ -76.225602077090571, 45.480166333676479 ], [ -76.225857085342369, 45.480414667291939 ], [ -76.226182929219647, 45.480762332514786 ], [ -76.226466271721648, 45.481189461137426 ], [ -76.226537107347141, 45.481388124509778 ], [ -76.226579608722432, 45.481586787181627 ], [ -76.226692945723215, 45.481735783725796 ], [ -76.226692945723215, 45.481914579058696 ], [ -76.22656544159733, 45.482113239874209 ], [ -76.226480438846735, 45.482222503024161 ], [ -76.226324600470662, 45.482292034009262 ], [ -76.226126260719241, 45.482311899989249 ], [ -76.225828751092166, 45.482192704004291 ], [ -76.225644578465875, 45.4821231728966 ], [ -76.22524128763807, 45.482062581432814 ], [ -76.224708367615563, 45.481961595514981 ], [ -76.224319480031582, 45.481951496913247 ], [ -76.22394499569144, 45.482012088496518 ], [ -76.223426478912828, 45.48220396141366 ], [ -76.223008784841142, 45.482173665733335 ]
+            ]);
+            var bounds = TR.getBounds();
+            var xmax = bounds.getEast();
+            var xmin = bounds.getWest();
+            var ymax = bounds.getSouth();
+            var ymin = bounds.getNorth();
+            var lat = ymin + (Math.random() * (ymax-ymin));
+            console.log(lat);
+            var lng = xmin + (Math.random() * (xmax-xmin));
+            console.log(lng);
+
+            function error(){
+                marker.setLngLat([lat, lng]).addTo(map)
+            }
+
+            function draw(error, options, response) {
+                data=response.rows;
+                console.log(data.length);
+                lendata = (data.length) - 1
+                marker.setPopup(new mapboxgl.Popup()
+                .setHTML("<p><b>Issue:</b></p>"+ data[lendata].cellsArray[2]))
+            
+                    
+            } 
+            
+           
+            
+            
+                
+        </script>
+    </body>
+</html>
